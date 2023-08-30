@@ -205,11 +205,17 @@ def resize(image, new_width):
     # which is a 1.0 aspect ratio image, the same as the original 200x200 input image (200/200 = 1.0).
     #
     # FIXME: the above explanation should work like that in theory, and I don't see anything wrong with it. BUT, what's _really_ happening when you
-    # run this script is it's generating output images which have aspect ratios that are about 3% off from their original images (it's barely noicable
+    # run this script is it's generating output images which have aspect ratios that are about 3% off from their original images (it's barely noticeable
     # unless you look really closely at the original image and the output image). I think the reason for this slightly incorrect behavior lies in the
     # vertical pixel spacing _between_ each ASCII line in the output image. If you zoom in on any set of two or three lines, you can tell there's some
     # built-in vertical spacing between them, about three pixels or so. Update: I think I just figured out what might be causing this. This file is a 
     # WIP until I confirm my theory is true and fix the issue.
+    #
+    # Update: the version of code in this file fixes the aspect ratio problem if you run this script without the "-w" option (allows you to specify
+    # the number of ASCII chars to use per line of the output text file - the total # of lines generated per file would then scale up or down based
+    # on the input image's aspect ratio [the original aspect ratio must be maintained]). In other words, leave everything in the script's config as
+    # default, and the original aspect ratio problem goes away. But try using the "-w" option and specify a non-default width - the problem comes
+    # back! 
     new_height =  1/font_aspect_ratio*new_height
 
     return image.resize((new_width.__round__(), new_height.__round__()))
