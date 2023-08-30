@@ -32,7 +32,9 @@ def file_exists(filename): return (os.path.isfile(filename) == True)
 def dir_exists(dir_name): return (os.path.isdir(dir_name) == True)
 def create_dir(dir_name): os.mkdir(dir_name)
 def convert_image_to_grayscale(image): return image.convert("L")
-def disable_antialiasing(renderer): renderer.fontmode = "1" # turns off anti-aliasing on TT fonts (renderer = ImageDraw object)
+def disable_antialiasing(renderer): renderer.fontmode = "1" # turns off anti-aliasing on TT fonts (renderer = ImageDraw object)    
+def get_mbox_width(font): return font.getbbox("M")[2] # using the "M" character glyph since traditionally font metrics are calculated based on the "M" box...
+def get_mbox_height(font): return font.getbbox("M")[3] # ...same here
 
 #--------------------------------------------------------------------------------------------------
 # main() function entry-point
@@ -268,9 +270,8 @@ def sum_pixel_height_for_all_lines(lines, font):
 def calc_font_aspect_ratio():
     font = get_font_object(False)
 
-    # using the "M" character glyph since traditionally font metrics are calculated based on the "M" box
-    Mbox_width = font.getbbox("M")[2]
-    Mbox_height = font.getbbox("M")[3]
+    Mbox_width = get_mbox_width(font)
+    Mbox_height = get_mbox_height(font)
 
     return Mbox_height / Mbox_width
 
