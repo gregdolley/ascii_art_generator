@@ -176,6 +176,7 @@ def pixels_to_ascii_chars(image):
 def resize(image, new_width):
     if new_width == None: return image
     if new_width <= 0: return image
+    
     font_aspect_ratio = calc_font_aspect_ratio()
     image_aspect_ratio = image.height / image.width
     new_height = new_width * image_aspect_ratio # calc new height in pixels based on user specified width (preserving the original image's aspect ratio)
