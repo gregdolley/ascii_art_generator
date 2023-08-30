@@ -157,7 +157,6 @@ def get_user_config():
     new_image_width = int(args.resize_image_width, base=10) if "resize_image_width" in args and args.resize_image_width != None else image.width
     output_filename = args.output if "output" in args and args.output != None else DEFAULT_OUTPUT_FILENAME
     font_file = args.font_file if "font_file" in args and args.font_file!= None else ""
-    print(f"FONT FILE: {font_file}")
 
     return image, new_image_width, output_filename, font_file
 
