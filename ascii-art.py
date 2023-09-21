@@ -136,16 +136,16 @@ def prompt_for_image_file():
 
 
 def parse_command_line_arguments():
-    parser = argparse.ArgumentParser(description='Command-line example.')
+    parser = argparse.ArgumentParser(description='Takes a color image and redraws it using ASCII characters instead of pixels. It saves the ASCII art as a text file and PNG file containing the exact same text.')
     parser.add_argument('-o', action='store', dest='output',
                         metavar='FILE',
                         help='Use FILE as output file name (without extension) instead of default (ascii_image.txt/.png)')
     parser.add_argument('-f', action='store', dest='font_file',
                         metavar='FONT_FILE_PATH',
-                        help='Use font file FONT_FILE_PATH for ASCII art font instead of default')
+                        help='Use font file FONT_FILE_PATH for ASCII art font instead of default (must be a monospaced font)')
     parser.add_argument('-w', action='store', dest='resize_image_width',
                         metavar='RESIZE_IMAGE_PIXEL_WIDTH',
-                        help='Resize the input image width to RESIZE_IMAGE_PIXEL_WIDTH pixels before converting to ASCII art (allows you to shrink/grow the input image if it is too big/small)')
+                        help='Resize the input image width to RESIZE_IMAGE_PIXEL_WIDTH pixels before converting to ASCII art (allows you to grow/shrink the input image if it is too big/small)')
 
     return parser.parse_args()
 
