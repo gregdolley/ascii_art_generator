@@ -100,15 +100,16 @@ def textfile_to_image(textfile_path):
 
 def generate_ascii_art(input_image):
     greyscale_image = convert_image_to_grayscale(input_image)
-    ascii_str = pixels_to_ascii_chars(greyscale_image)
-    img_width = greyscale_image.width
-    ascii_img_text = ""
+    return add_line_breaks(pixels_to_ascii_chars(greyscale_image), greyscale_image.width)
 
-    # add line breaks between each line of text
-    for i in range(0, len(ascii_str), img_width):
-        ascii_img_text += ascii_str[i:i+img_width] + "\n"
-    
-    return ascii_img_text
+
+def add_line_breaks(ascii_str, line_length):
+    ascii_str_with_breaks = ""
+
+    for i in range(0, len(ascii_str), line_length):
+        ascii_str_with_breaks += ascii_str[i:i+line_length] + "\n"
+
+    return ascii_str_with_breaks
 
 
 def get_output_filenames_with_ext(output_filename):
