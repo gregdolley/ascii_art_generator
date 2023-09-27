@@ -262,22 +262,9 @@ def calc_widest_line_in_pixels(lines, font):
     return int(ceil(max_line_width))
 
 
-# ***TEST***
-# original function - uncomment whe done testing (and get rid of the same function below this one)
-# def calc_tallest_line_in_pixels(lines, font):
-#     tallest_line = max(lines, key=lambda line: font.getbbox(line)[3])
-#     # took out numer of vertical pixels in the font's descent size from the calculation (testing a theory for more accurate aspect ratio's on the output image)
-#     return font.getbbox(tallest_line)[3]#+font.getmetrics()[1] # tallest_line + font descent size in # y-pixels
-
-
-def calc_tallest_line_in_pixels(lines, font):
-    #tallest_line = max(lines, key=lambda line: font.getbbox(line)[3])
-    return get_mbox_height(font) #+font.getmetrics()[1] # tallest_line + font descent size in # y-pixels
-
-
 def sum_pixel_height_for_all_lines(lines, font):
-    max_line_height = calc_tallest_line_in_pixels(lines, font)
-    return int(ceil(max_line_height * len(lines))), max_line_height
+    single_line_height = get_mbox_height(font) 
+    return int(ceil(single_line_height * len(lines))), single_line_height
 
 
 def calc_font_aspect_ratio():
