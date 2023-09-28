@@ -27,13 +27,13 @@ Type "help", "copyright", "credits" or "license" for more information.
 Now type the following two commands:
 
 ```python
->>> import PIL
+import PIL
 ```
 
 This loads the PIL library, but the terminal will not output any message after you press \<Enter\> (it'll just print another "```>>>``` line"). Now type this next command and hit \<Enter\>:
 
 ```python
->>> PIL.__version__
+PIL.__version__
 ```
 
 This will make Python print the version of the PIL library on the next line:
