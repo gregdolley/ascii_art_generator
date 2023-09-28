@@ -1,2 +1,8 @@
 .vscode/*
 output/*
+*test-code-backup*.py
+ascii_image*
+ascii_test*
+grey_test.png
+face_test*
+*deleteme*
