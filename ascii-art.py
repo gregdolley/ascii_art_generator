@@ -183,28 +183,27 @@ def resize(image, new_width):
     image_aspect_ratio = image.height / image.width
     new_height = new_width * image_aspect_ratio # calc new height in pixels based on user specified width (preserving the original image's aspect ratio)
 
-    # The previous line calculated a new height for the input image because the user specified a custom image width (to preserve the original aspect ratio,
-    # obviously the height needs to be adjusted accordingly). The line below this comment block also calculates a new image height, but it's doing so in 
-    # order to compensate for the ASCII glyph shape not being a perfect square (I think all ASCII chars have more vertical pixels than horizontal ones for 
-    # all common latin fonts). So if you didn't adjust the height to take into account that each ASCII "pixel" in the output "ASCII image" is really a 
-    # vertical rectangle instead of a perfect square, then you would end up with an image that looked stretched vertically instead of maintaining the 
-    # original image's aspect ratio. The next couple paragraphs explain my solution to fix this because I don't think it's obvious from the code.
-    # If you expanded the formula right below this comment block, it would look like this:
+    # The previous line calculated a new height for the input image if new_width != image.width in order to preserve its aspect ratio.
+    # (If new_width == image.width, then the image.width divisor is cancelled out leaving just, "new_height = image.height", the original image height.)
+    # 
+    # The line below this comment block also calculates a new image height, but it's doing so in order to compensate for the ASCII glyph shape being a
+    # rectangle (where height > width) instead of a perfect square. If you didn't do this, then you would end up with ASCII images that look stretched 
+    # vertically. The next couple paragraphs explain my solution to fix this because it's not obvious from the code.
+    # 
+    # If you expanded the formula immediately below this comment block, it would look like this:
     #
     # adjusted_height  = 1 / (font_glyph_height / font_glyph_width) * new_height
     #
     # Basically what this formula is saying is: take the height of a glyph and express it as a percentage of its width (for example, if the height
-    # is 30, and the width is 15, then the height as a percentage of the width would be 200% (or 2.0; because 30 is 15 (width) * 2.0 = 30, or 15*200% = 30).
-    # Then take that number and innvert it (1 / 2.0 = 0.5 or 50%): the result is the percentage that you take from the image height to get the new
-    # and reduceed image height that will fit the vertical rectangular glyphs resulting in vertically stretching this "pre-reduced" image height back
-    # into the original height we wanted in the first place.
+    # is 30, and the width is 15, then the height as a percentage of the width would be 200% (2.0; because the width of 15 * 2.0 is 30). Then take that
+    # number and innvert it (1 / 2.0 = 0.5 or 50%): the result is the percentage of the original height that must be used as the new height (that's why
+    # the last operation  part of that formula is: "<inverted % result>*new_height").
     # 
     # Complete example: take a 200x200 image where the font glyphs are 15x30 (width 15, height 30), like in the previous example, and calculate the 
     # new height: 1/(30/15)*200 = 1/2*200 = 0.5*200 = 100 pixels high. So the input image is converted from 200x200 into 200x100, which is totally 
-    # the incorrect aspect ratio, BUT, if you render 200 15-pixel-wide glyphs, and 100 30-pixel-high glyphs, the resulting image dimensions in pixels 
-    # will be exactly 200*15 = 3,000 pixels wide and 100*30 = 3000 pixels high; in other words, a new image with the dimensions of 3000x3000 pixels, 
-    # which is a 1.0 aspect ratio image, the same as the original 200x200 input image (200/200 = 1.0).
-    #
+    # the incorrect aspect ratio (when using square pixels), BUT, if you render 200 15-pixel-wide glyphs, and 100 30-pixel-high glyphs, the resulting
+    # image dimensions in pixels will be exactly 200*15 = 3,000 pixels wide and 100*30 = 3000 pixels high; in other words, a new image with the
+    # dimensions of 3000x3000 pixels, matching the aspect ratio of the original image (3000/3000 = 200/200 = 1.0).
     new_height =  1/font_aspect_ratio*new_height
 
     return image.resize((new_width.__round__(), new_height.__round__()))
