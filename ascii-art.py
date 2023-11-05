@@ -32,6 +32,8 @@ user_font_file = "" # pylint: disable=invalid-name
 # HELPER FUNCTIONS
 #--------------------------------------------------------------------------------------------------
 # pylint: disable=C0321
+def file_exists(filename): return os.path.isfile(filename) is True
+def dir_exists(dir_name): return os.path.isdir(dir_name) is True
 def create_dir(dir_name): os.mkdir(dir_name)
 def convert_image_to_grayscale(image): return image.convert("L")
 def disable_antialiasing(renderer): renderer.fontmode = "1" # turns off anti-aliasing on TT fonts (renderer = ImageDraw object)    
@@ -68,7 +70,7 @@ def main():
 def create_text_file(output_text_filename, text_content):
     dir_name = os.path.dirname(output_text_filename)
     if dir_name != '' and not dir_exists(dir_name): create_dir(dir_name)
-    with open(output_text_filename, "w") as f: f.write(text_content) # save the string to a file to check for accuracy  
+    with open(output_text_filename, "w", encoding="utf-8") as f: f.write(text_content) # save the string to a file to check for accuracy  
 
 
 def get_font_object(show_warnings=True):
@@ -80,7 +82,7 @@ def get_font_object(show_warnings=True):
     if show_warnings is True and len(user_font_file) > 0 and not file_exists(user_font_file): print(f'Warning: could not find user-specified font file: "{user_font_file}"; using alternate font: "{font_filename}".')
 
     try:
-        font = ImageFont.truetype(font_filename, size=12)
+        font = ImageFont.truetype(font_filename, size=12, encoding='unic')
     except IOError:
         print(f'Could not load font "{font_filename}".')
         raise
@@ -242,7 +244,7 @@ def create_grayscale_image_with_renderer(image_width, image_height):
 
 
 def read_all_lines_rstrip(textfile_path):
-    with open(textfile_path) as f:
+    with open(textfile_path, encoding="utf-8") as f:
         lines = tuple(line.rstrip() for line in f.readlines())
     return lines
 
