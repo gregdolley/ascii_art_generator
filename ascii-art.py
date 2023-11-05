@@ -220,19 +220,30 @@ def resize(image, new_width):
 
 
 def get_monospace_font_filename():
-    operating_system = platform.system()
+    font_dirs = []
 
-    if operating_system == "Windows":
-        possible_fonts = ["c:/windows/fonts/consola.ttf"]
-    elif operating_system == "Linux":
-        possible_fonts = ["/usr/share/fonts/truetype/freefont/FreeMono.ttf",
-                          "/usr/share/fonts/truetype/ubuntu/UbuntuMono-R.ttf"]
-    elif operating_system == "Darwin": # MacOS
-        possible_fonts = ["/System/Library/Fonts/Monaco.ttf"]
+    if sys.platform == "win32":
+        possible_fonts = ["consola.ttf"]
+
+        windir = os.environ.get("WINDIR") or "c:/windows/"
+        font_dirs.append(os.path.join(windir, "fonts"))
+    elif sys.platform in ("linux", "linux2"):
+        possible_fonts = ["FreeMono.ttf", "UbuntuMono-R.ttf"]
+        # pylint: disable=invalid-name
+        XDG_DATA_DIRS = os.environ.get("XDG_DATA_DIRS", "")
+        if not XDG_DATA_DIRS: XDG_DATA_DIRS = "/usr/share"
+        font_dirs += [os.path.join(dir, "fonts") for dir in XDG_DATA_DIRS.split(":")]
+        # pylint: enable=invalid-name
+    elif sys.platform == "darwin":
+        possible_fonts = ["Monaco.ttf"]
+        font_dirs += ["/Library/Fonts", "/System/Library/Fonts", os.path.expanduser("~/Library/Fonts")]
 
     for font_file in possible_fonts:
-        if file_exists(font_file) == True:
-            return font_file
+        for font_dir in font_dirs:
+            for _dirpath, _dirnames, filenames in os.walk(font_dir):
+                for current_filename in filenames:
+                    if current_filename == font_file:
+                        return font_file
 
     raise FileNotFoundError("Can't find a suitable font file for your operating system.")
 
