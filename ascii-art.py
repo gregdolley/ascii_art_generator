@@ -137,7 +137,7 @@ def prompt_for_image_file():
 
     while len(path) == 0:
         path = input("Enter the path to the image file: ").strip()
-        if(len(path) == 0): print("Received blank input.")
+        if len(path) == 0: print("Received blank input.")
 
     return path
 
@@ -147,6 +147,9 @@ def parse_command_line_arguments():
     parser.add_argument('-o', action='store', dest='output',
                         metavar='FILE',
                         help='Use FILE as output file name (without extension) instead of default (ascii_image.txt/.png)')
+    parser.add_argument('-i', action='store', dest='input',
+                        metavar='INPUT_FILE_PATH',
+                        help='Use INPUT_FILE_PATH as input image file name that you want converted to ASCII art')
     parser.add_argument('-f', action='store', dest='font_file',
                         metavar='FONT_FILE_PATH',
                         help='Use font file FONT_FILE_PATH for ASCII art font instead of default (must be a monospaced font)')
@@ -159,13 +162,14 @@ def parse_command_line_arguments():
 
 def get_user_config():
     args = parse_command_line_arguments()
-    path = prompt_for_image_file()
+    input_filename = args.input if "input" in args and args.input != None else ""
+    path = prompt_for_image_file() if input_filename == "" else input_filename
     image = Image.open(path)
     new_image_width = int(args.resize_image_width, base=10) if "resize_image_width" in args and args.resize_image_width != None else image.width
     output_filename = args.output if "output" in args and args.output != None else DEFAULT_OUTPUT_FILENAME
     font_file = args.font_file if "font_file" in args and args.font_file!= None else ""
 
-    return image, new_image_width, output_filename, font_file
+    return image, new_image_width, output_filename, font_file, input_filename
 
 
 def pixels_to_ascii_chars(image):
