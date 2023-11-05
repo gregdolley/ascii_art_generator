@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring, invalid-name
 #---------------------------------------------------------------------------------------------
 # File: ascii-art.py
 # Author: Greg Dolley
@@ -217,6 +218,7 @@ def resize(image, new_width):
     new_height =  1/font_aspect_ratio*new_height
 
     return image.resize((round(new_width), round(new_height)))
+
 
 def get_monospace_font_filename():
     font_dirs = []
