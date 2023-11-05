@@ -16,6 +16,8 @@ from math import ceil
 
 from PIL import Image, ImageDraw, ImageFont
 
+# pylint: disable=line-too-long, missing-function-docstring
+
 #--------------------------------------------------------------------------------------------------
 # GLOBALS
 #--------------------------------------------------------------------------------------------------
@@ -23,26 +25,27 @@ ASCII_CHARS = ["@", "%", "#", "8", "$", "9", "7", "?", "*", ";", "+", ":", "-", 
 ASCII_WHITE_INDEX = len(ASCII_CHARS)-1
 DEFAULT_OUTPUT_FILENAME = "ascii_image"
 
-user_font_file = ""
+user_font_file = "" # pylint: disable=invalid-name
 
 #--------------------------------------------------------------------------------------------------
 # HELPER FUNCTIONS
 #--------------------------------------------------------------------------------------------------
-def file_exists(filename): return (os.path.isfile(filename) == True)
-def dir_exists(dir_name): return (os.path.isdir(dir_name) == True)
+# pylint: disable=C0321
 def create_dir(dir_name): os.mkdir(dir_name)
 def convert_image_to_grayscale(image): return image.convert("L")
 def disable_antialiasing(renderer): renderer.fontmode = "1" # turns off anti-aliasing on TT fonts (renderer = ImageDraw object)    
 def get_mbox_width(font): return font.getbbox("M")[2] # using the "M" character glyph since traditionally font metrics are calculated based on the "M" box...
 def get_mbox_height(font): return font.getbbox("M")[3] # ...same here
 
+# pylint: enable=C0321
+
 #--------------------------------------------------------------------------------------------------
 # main() function entry-point
 #--------------------------------------------------------------------------------------------------
 def main():
-    global user_font_file
-    
-    image, new_image_width, output_filename, user_font_file = get_user_config() # parse command line and query user for input vars
+    global user_font_file # pylint: disable=global-statement, invalid-name
+
+    image, new_image_width, output_filename, user_font_file, _input_file = get_user_config() # parse command line and query user for input vars
     image = resize(image, new_image_width) # resize image to custom user width (if specified) and adjust image height to compensate for font aspect ratio (see function for details)
 
     print("Generating ASCII art text string...")
@@ -73,7 +76,7 @@ def get_font_object(show_warnings=True):
     else:
         font_filename = get_monospace_font_filename()
 
-    if show_warnings == True and len(user_font_file) > 0 and not file_exists(user_font_file): print(f'Warning: could not find user-specified font file: "{user_font_file}"; using alternate font: "{font_filename}".')
+    if show_warnings is True and len(user_font_file) > 0 and not file_exists(user_font_file): print(f'Warning: could not find user-specified font file: "{user_font_file}"; using alternate font: "{font_filename}".')
 
     try:
         font = ImageFont.truetype(font_filename, size=12)
@@ -86,7 +89,7 @@ def get_font_object(show_warnings=True):
 
 def textfile_to_image(textfile_path):
     print("Creating image version of ASCII text...")
-    
+
     lines = read_all_lines_rstrip(textfile_path) # read all text lines and put into "lines" array (also rstrip any trailing whitespaces)
     font = get_font_object()
     image_height, max_line_height = sum_pixel_height_for_all_lines(lines, font)
@@ -119,7 +122,7 @@ def get_output_filenames_with_ext(output_filename):
 
     return output_text_filename, output_image_filename
 
-    
+
 def draw_text_strings_as_graphical_lines(lines, renderer, line_height, font):
     # draw each line of text onto image canvas
     for i, line in enumerate(lines):
@@ -129,7 +132,7 @@ def draw_text_strings_as_graphical_lines(lines, renderer, line_height, font):
 def prompt_for_image_file():
     path = ""
 
-    while(len(path) == 0):
+    while len(path) == 0:
         path = input("Enter the path to the image file: ").strip()
         if(len(path) == 0): print("Received blank input.")
 
