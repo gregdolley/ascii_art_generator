@@ -70,7 +70,7 @@ def main():
 def create_text_file(output_text_filename, text_content):
     dir_name = os.path.dirname(output_text_filename)
     if dir_name != '' and not dir_exists(dir_name): create_dir(dir_name)
-    with open(output_text_filename, "w", encoding="utf-8") as f: f.write(text_content) # save the string to a file to check for accuracy  
+    with open(output_text_filename, "w", encoding="utf-8") as f: f.write(text_content) # save the string to a file to check for accuracy
 
 
 def get_font_object(show_warnings=True):
@@ -119,7 +119,7 @@ def add_line_breaks(ascii_str, line_length):
 
 
 def get_output_filenames_with_ext(output_filename):
-    fname_data = dict(filename=output_filename, txt_ext="txt", img_ext="png");
+    fname_data = dict(filename=output_filename, txt_ext="txt", img_ext="png")
     output_text_filename = "{filename}.{txt_ext}".format(**fname_data)
     output_image_filename = "{filename}.{img_ext}".format(**fname_data)
 
