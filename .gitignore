@@ -1,4 +1,5 @@
 .vscode/*
+.vs/*
 output/*
 *test-code-backup*.py
 ascii_image*
