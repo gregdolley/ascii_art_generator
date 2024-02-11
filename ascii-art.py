@@ -261,7 +261,7 @@ def create_grayscale_image_with_renderer(image_width, image_height):
 
 def read_all_lines_rstrip(textfile_path):
     with open(textfile_path, encoding="utf-8") as f:
-        lines = tuple(line.rstrip() for line in f.readlines())
+        lines = tuple(line.rstrip('\r\n') for line in f.readlines())
     return lines
 
 
