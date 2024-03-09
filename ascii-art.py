@@ -46,7 +46,7 @@ def get_mbox_height(font): return font.getbbox("M")[3] # ...same here
 def main():
     global user_font_file # pylint: disable=global-statement, invalid-name
 
-    image, new_image_width, output_filename, user_font_file, _input_file = get_user_config() # parse command line and query user for input vars
+    image, new_image_width, output_filename, user_font_file = get_user_config() # parse command line and query user for input vars
     image = resize(image, new_image_width) # resize image to custom user width (if specified) and adjust image height to compensate for font aspect ratio (see function for details)
 
     print("Generating ASCII art text string...")
@@ -169,7 +169,7 @@ def get_user_config():
     output_filename = args.output if "output" in args and args.output is not None else DEFAULT_OUTPUT_FILENAME
     font_file = args.font_file if "font_file" in args and args.font_file is not None else ""
 
-    return image, new_image_width, output_filename, font_file, input_filename
+    return image, new_image_width, output_filename, font_file
 
 
 def pixels_to_ascii_chars(image):
