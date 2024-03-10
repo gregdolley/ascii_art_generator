@@ -1,5 +1,5 @@
 #---------------------------------------------------------------------------------------------
-# File: ascii-art.py
+# File: ascii_art.py
 # Author: Greg Dolley
 # Date: 6/28/2023
 # License: see LICENSE file in root directory of project
