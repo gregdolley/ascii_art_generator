@@ -1,4 +1,3 @@
-# pylint: disable=missing-module-docstring, invalid-name
 #---------------------------------------------------------------------------------------------
 # File: ascii-art.py
 # Author: Greg Dolley
@@ -16,8 +15,8 @@ from math import ceil
 
 from PIL import Image, ImageDraw, ImageFont
 
-# pylint: disable=line-too-long, missing-function-docstring
-# pylint: disable=multiple-statements
+# Turning off pylint warning about function having no docstring:
+# pylint: disable=missing-function-docstring
 
 #--------------------------------------------------------------------------------------------------
 # GLOBALS
@@ -65,7 +64,7 @@ def main():
 #--------------------------------------------------------------------------------------------------
 # SUPPORT FUNCTIONS
 #--------------------------------------------------------------------------------------------------
-# pylint: disable=multiple-statements, invalid-name
+# pylint: disable=invalid-name
 def create_text_file(output_text_filename, text_content):
     dir_name = os.path.dirname(output_text_filename)
     if dir_name != '' and not dir_exists(dir_name): create_dir(dir_name)
@@ -132,6 +131,7 @@ def draw_text_strings_as_graphical_lines(lines, renderer, line_height, font):
         renderer.text((0, int(round(i * line_height))), line, fill=0, font=font)
 
 
+# pylint: disable=bad-builtin
 def prompt_for_image_file():
     path = ""
 
@@ -241,6 +241,7 @@ def get_monospace_font_filename():
 
     for font_file in possible_fonts:
         for font_dir in font_dirs:
+            # pylint: disable=unused-variable
             for _dirpath, _dirnames, filenames in os.walk(font_dir):
                 for current_filename in filenames:
                     if current_filename == font_file:
@@ -285,6 +286,7 @@ def calc_font_aspect_ratio():
     return Mbox_height / Mbox_width
 
 
+# pylint: disable=bad-builtin
 def callstack_prompt(from_traceback):
     while True:
         resp = input("Show callstack? (y/n) ").strip()
