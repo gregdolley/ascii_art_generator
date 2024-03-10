@@ -21,8 +21,8 @@ from PIL import Image, ImageDraw, ImageFont
 #--------------------------------------------------------------------------------------------------
 # GLOBALS
 #--------------------------------------------------------------------------------------------------
-#ASCII_CHARS = ["█", "▓", "%", "@", "#", "8", "$", "9", "7", "?", "*", ";", "+", ":", "-", ",", ".", " "]
-ASCII_CHARS = ["█", "@", "%", "#", "8", "$", "9", "7", "?", "*", ";", "+", ":", "-", ",", ".", " "]
+ASCII_CHARS = ["█", "@", "%", "#", "8", "$", "9", "h", "J", "]", "/", "|", "_", "~", ".", " "] # just need to replace index 13 and 14 ("~" and ".")! So close!
+
 ASCII_WHITE_INDEX = len(ASCII_CHARS)-1
 DEFAULT_OUTPUT_FILENAME = "ascii_image"
 
@@ -175,14 +175,32 @@ def get_user_config():
 def pixels_to_ascii_chars(image):
     pixels = image.getdata()
     ascii_str = ""
-    divisor = 255//(len(ASCII_CHARS)-2)+1
+    #brightest_pixel_value = max(pixels)
+    #divisor = 255//(len(ASCII_CHARS)-2)+1
+    divisor = len(ASCII_CHARS) #brightest_pixel_value//(len(ASCII_CHARS)-2)+1
+
+    # in gray_test.png, the pixel values should look like:
+    #
+    # 0x00, 0x10, 0x20, 0x30 ... 0x90, 0xa0, 0xb0, 0xc0, 0xd0, 0xe0, 0xf0, 0xff
+    # 0, 16, 32, 48, 64, ... 144, 160, 176, 192, 208, 224, 240, 255
+    # indexes: 0, 1, 2, 3, 4 ... 9, 10, 11, 12, 13, 14, 15, 16
+    temp_pixel_x = 0
+    temp_pixel_y = 0
+    temp_image_pixel_width = image.width
 
     for pixel in pixels:
-        # pylint: disable=fixme
         # TODO: it would be better if this was a non-linear scale based on the grayscale histogram of the image.
         # Some images get converted and end up too light
-        ascii_char = ASCII_CHARS[pixel//divisor] if pixel != 255 else ASCII_CHARS[ASCII_WHITE_INDEX]
+        index = (pixel+1)//divisor-1
+        if index < 0: index = 0
+        ascii_char = ASCII_CHARS[index] # if pixel < brightest_pixel_value else ASCII_CHARS[ASCII_WHITE_INDEX]
         ascii_str += ascii_char
+
+        temp_pixel_x += 1
+        if temp_pixel_x == temp_image_pixel_width:
+            temp_pixel_x = 0
+            temp_pixel_y += 1
+
     return ascii_str
 
 
