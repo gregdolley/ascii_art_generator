@@ -307,13 +307,13 @@ def calc_font_aspect_ratio():
 # pylint: disable=bad-builtin
 def callstack_prompt(from_traceback):
     while True:
-        resp = input("Show callstack? (y/n) ").strip()
-        if(len(resp) == 0 or resp == "n"): break
-        elif resp == "y":
-            traceback.print_tb(from_traceback)
+        resp = input("Show callstack? (y/N) ").strip()
+
+        if resp in {'y', 'Y', 'n', 'N'} or len(resp) == 0:
+            if resp in {'y', 'Y'}: traceback.print_tb(from_traceback)
             break
 
-        print("Invalid input. Please try again (note: response is case-sensitive).")
+        print("Invalid input. Please try again.")
 
 
 if __name__ == '__main__': # prevent this file from getting "module" loaded
@@ -327,4 +327,3 @@ if __name__ == '__main__': # prevent this file from getting "module" loaded
     except Exception as e: # pylint: disable=broad-except
         print(sys.exc_info()[1])
         callstack_prompt(sys.exc_info()[2])
-        sys.exit(-1)
